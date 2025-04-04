@@ -1,0 +1,24 @@
+1. Start Nagios Daemon Using nagios -d
+Typically you would execute “service nagios start” to start the Nagios daemon, which really calls the /etc/rc.d/init.d/nagios script.
+
+You’ll see the following line inside the /etc/rc.d/init.d/nagios script for the Nagios startup:
+
+$NagiosBin -d $NagiosCfgFile
+So, you can also manually start Nagios daemon as shown below.
+
+# /usr/local/nagios/bin/nagios -d /usr/local/nagios/etc/nagios.cfg
+The advantage of manually starting the Nagios daemon is that you can run two Nagios instance on one server. If you like to run a small test instance where you can play around with various configuration files, and Nagios options, create a nagios-test.cfg that points to different configuration object directories than the nagios.cfg, and then start the test instance using nagios-test.cfg file as shown below.
+
+2.The precache configuration information will be stored in the /usr/local/nagios/var/objects.precache file. If you’ve never created the pre-cache configuration files before, this file will not be present. If you want to change the location of the precache file, change the precached_object_file directive in the nagios.cfg file.
+
+To create the pre-cache configuration files, use -p option as shown below.
+
+# /usr/local/nagios/bin/nagios -pv /usr/local/nagios/etc/nagios.cfg
+
+
+
+3. Use Pre-cached Nagios Config Objects using nagios -u
+After creating the pre-cache objects as shown above, stop Nagios daemon, and start it using -u option as shown below. Instead of reading the nagios configuration files again, it will simply use the cached objects that were earlier created from the /usr/local/nagios/var/objects.precache directory.
+
+# /usr/local/nagios/bin/nagios -ud /usr/local/nagios/etc/nagios.cfg
+
